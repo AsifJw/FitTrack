@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -57,6 +61,34 @@ fun DashboardScreen(
                     }
                 }
             }
+            Button(onClick = onClearLogs, modifier = Modifier.fillMaxWidth()) { Text("Clear History") }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = "Workout History",
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            if (uiState.history.isEmpty()) {
+                Text("No category selected yet. Select a category above to get started!")
+            } else {
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(uiState.history, key = { it.id }) { log ->
+                        Card(modifier = Modifier.fillMaxWidth()) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(log.exerciseName)
+                                Text("${log.durationMins} minutes")
+                            }
+                        }
+                    }
+                }
+            }
+
         }
     }
 }
