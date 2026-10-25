@@ -24,8 +24,10 @@ import androidx.compose.ui.unit.dp
 import com.example.fittrack.data.Exercise
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
 
@@ -38,6 +40,7 @@ fun ExerciseDetailScreen(
 
 ) {
     var durationInput by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
     val duration = durationInput.toIntOrNull()
     val isValid = duration != null && duration > 0
     Scaffold(
@@ -64,6 +67,18 @@ fun ExerciseDetailScreen(
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState())
             ) {
+                if (showDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog = false },
+                        title = { Text("Workout Logged") },
+                        text = { Text("${exercise.name} was added to your history.") },
+                        confirmButton = {
+                            TextButton(onClick = { showDialog = false }) {
+                                Text("OK")
+                            }
+                        }
+                    )
+                }
                 DifficultyBadge(exercise.difficulty)
                 Spacer(modifier = Modifier.height(12.dp))
                 Text("Recommended: ${exercise.recommendedMinutes} mins")
@@ -102,6 +117,7 @@ fun ExerciseDetailScreen(
                         if (duration != null) {
                             onLogWorkout(exercise.name, duration)
                             durationInput = ""
+                            showDialog = true
                         }
                     },
                     enabled = isValid,
