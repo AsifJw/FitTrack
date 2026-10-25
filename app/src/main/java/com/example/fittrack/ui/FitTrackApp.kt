@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.fittrack.data.ExerciseData
 import com.example.fittrack.viewmodel.WorkoutViewModel
 
 @Composable
@@ -29,7 +30,12 @@ fun FitTrackApp() {
             arguments = listOf(navArgument("category") { type = NavType.StringType })
         ) { backStackEntry ->
             val category = backStackEntry.arguments?.getString("category") ?: ""
-            Text("Exercise list: $category")
+            ExerciseListScreen(
+                category = category,
+                exercises = ExerciseData.getExercisesByCategory(category),
+                onExerciseClick = { id -> navController.navigate("details/$id") },
+                onBack = { navController.popBackStack() }
+            )
         }
         composable(
             route = "details/{exerciseId}",
