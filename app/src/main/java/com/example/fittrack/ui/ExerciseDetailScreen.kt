@@ -123,7 +123,7 @@ fun ExerciseDetailScreen(
                     enabled = isValid,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Save Workout")
+                    Text("Log completed Workout")
                 }
             }
         }
