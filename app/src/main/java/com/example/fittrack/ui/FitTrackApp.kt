@@ -42,7 +42,11 @@ fun FitTrackApp() {
             arguments = listOf(navArgument("exerciseId") { type = NavType.IntType })
         ) { backStackEntry ->
             val exerciseId = backStackEntry.arguments?.getInt("exerciseId") ?: 0
-            Text("The exercise details: $exerciseId")
+            ExerciseDetailScreen(
+                exercise = ExerciseData.getExerciseById(exerciseId),
+                onLogWorkout = { name, minutes -> viewModel.logWorkout(name, minutes) },
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }
