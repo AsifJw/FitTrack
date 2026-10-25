@@ -18,9 +18,11 @@ fun FitTrackApp() {
 
     NavHost(navController = navController, startDestination = "dashboard") {
         composable("dashboard") {
-            Button(onClick = { navController.navigate("exercises/Cardio") }) {
-                Text("Go to Cardio")
-            }
+            DashboardScreen(
+                uiState = viewModel.uiState,
+                onCategoryClick = { category -> navController.navigate("exercises/$category") },
+                onClearLogs = { viewModel.clearLogs() }
+            )
         }
         composable(
             route = "exercises/{category}",
